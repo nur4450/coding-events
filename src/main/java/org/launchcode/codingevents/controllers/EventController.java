@@ -1,5 +1,6 @@
 package org.launchcode.codingevents.controllers;
 
+import org.launchcode.codingevents.model.Event;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,7 @@ import java.util.List;
 @RequestMapping("events")
 public class EventController {
 
-    private static List<String> events = new ArrayList<>();
+    private static List<Event> events = new ArrayList<>();
 
     @GetMapping
     public String displayAllEvents(Model model){
@@ -23,19 +24,26 @@ public class EventController {
 //        events.add("Strange Loop");
 //        events.add("Apple WWDC");
 //        events.add("SpringOne Platform");
+        model.addAttribute("title", "All events");
         model.addAttribute("events", events);
         return "events/index";
     }
 
+//    @GetMapping("create")
+//    public String renderCreateEventForm(){
+//        return "events/create";
+//    }
+
     @GetMapping("create")
-    public String renderCreateEventForm(){
+    public String displayCreateEventForm(Model model){
+        model.addAttribute("title", "Create Event");
         return "events/create";
     }
 
     //lives at /events/create
     @PostMapping("create")
-    public String createEvent(@RequestParam String eventName){
-        events.add(eventName);
+    public String processCreateEventForm(@RequestParam String eventName){
+        events.add(new Event(eventName));
         return "redirect:";
     }
 
